@@ -242,6 +242,8 @@
     <Content Include="Models\Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\CrystalReportDemo - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\CrystalReportDemo20190327110206 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
