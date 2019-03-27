@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CrystalDecisions.CrystalReports.Engine;
+using CrystalReportDemo.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -8,23 +11,32 @@ namespace CrystalReportDemo.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        MVCTutorialEntities db = new MVCTutorialEntities();
+
+        public ActionResult EmployeeList()
         {
-            return View();
+            return View(db.EmployeeInfoes.ToList());
         }
 
-        public ActionResult About()
+        public ActionResult exportReport()
         {
-            ViewBag.Message = "Your application description page.";
+            ReportDocument rd = new ReportDocument();
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            rd.Load(Path.Combine(Server.MapPath("~/Report"), "CrystalReport.rpt"));
+            rd.SetDataSource(db.EmployeeInfoes.ToList());
+            Response.Buffer = false;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            try
+            {
+                Stream stream = rd.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+                stream.Seek(0, SeekOrigin.Begin);
+                return File(stream, "application/pdf", "Employee_list.pdf");
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
